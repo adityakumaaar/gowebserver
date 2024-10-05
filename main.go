@@ -22,6 +22,9 @@ func main() {
 	godotenv.Load()
 
 	portString := os.Getenv("PORT")
+	if portString == "" {
+		log.Fatal("No PORT is defined in the environment!")
+	}
 	dbURL := os.Getenv("DB_URL")
 	if dbURL == "" {
 		log.Fatal("No DB URL found")
@@ -51,14 +54,11 @@ func main() {
 	v1Router.Get("/healthz", handlerReadiness)
 	v1Router.Get("/err", handlerError)
 	v1Router.Post("/users", apiCfg.handlerCreateUsers)
+	v1Router.Get("/users", apiCfg.handlerGetUser)
 
 	router.Mount("/v1", v1Router)
 
 	server := &http.Server{Handler: router, Addr: ":" + portString}
-
-	if portString == "" {
-		log.Fatal("No PORT is defined in the environment!")
-	}
 	log.Print("Server starting on ", portString)
 	server.ListenAndServe()
 
