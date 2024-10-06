@@ -14,7 +14,7 @@ func (apiCfg *apiConfig) handlerCreateFeed(w http.ResponseWriter, r *http.Reques
 
 	type params struct {
 		Name string `json:"name"`
-		URL  string `json"url"`
+		URL  string `json:"url"`
 	}
 
 	decoder := json.NewDecoder(r.Body)
